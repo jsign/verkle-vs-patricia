@@ -13,6 +13,7 @@ func BenchmarkFpInverse(b *testing.B) {
 		var x fp.Element
 		x.SetRandom()
 
+		b.ReportAllocs()
 		b.ResetTimer()
 		var resIPA fp.Element
 		for i := 0; i < b.N; i++ {
@@ -27,6 +28,7 @@ func BenchmarkFpInverse(b *testing.B) {
 		xBLST.FromBEndian(beBytes[:])
 
 		var resBLST *blst.Scalar
+		b.ReportAllocs()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			resBLST = xBLST.Inverse()
@@ -66,6 +68,7 @@ func BenchmarkFpMul(b *testing.B) {
 		var y fp.Element
 		y.SetRandom()
 
+		b.ReportAllocs()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			x.Mul(&x, &y)
@@ -83,6 +86,7 @@ func BenchmarkFpMul(b *testing.B) {
 		beYBytes := yIPA.Bytes()
 		yBLST.FromBEndian(beYBytes[:])
 
+		b.ReportAllocs()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
 			xBLST.MulAssign(&yBLST)

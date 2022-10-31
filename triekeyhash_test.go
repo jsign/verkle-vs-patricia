@@ -1,19 +1,22 @@
 package main
 
 import (
+	"math/rand"
 	"testing"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	verkleutils "github.com/ethereum/go-ethereum/trie/utils"
 	"github.com/holiman/uint256"
+	"github.com/stretchr/testify/require"
 )
 
 func BenchmarkHashAddress(b *testing.B) {
-	addrBytes := common.HexToAddress("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2").Bytes()
+	addrBytes := make([]byte, common.AddressLength)
+	_, err := rand.Read(addrBytes[:])
+	require.NoError(b, err)
 
 	b.Run("keccak", benchKeccak(addrBytes))
-
 	b.Run("pedersen hash", func(b *testing.B) {
 		var res []byte
 		// Warmup go-ipa generating precomputes before main bench.
@@ -29,16 +32,19 @@ func BenchmarkHashAddress(b *testing.B) {
 }
 
 func BenchmarkHashStorageSlot(b *testing.B) {
-	addrBytes := common.HexToAddress("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2").Bytes()
-	storageSlot := uint256.NewInt(42)
+	addrBytes := make([]byte, common.AddressLength)
+	_, err := rand.Read(addrBytes[:])
+	require.NoError(b, err)
+
+	storageSlot := uint256.NewInt(rand.Uint64())
 	storageSlotAddr := crypto.Keccak256Hash(storageSlot.Bytes()).Bytes()
+
+	// Warmup go-ipa generating precomputes before main bench.
+	sink = verkleutils.GetTreeKeyStorageSlot(addrBytes, storageSlot)
 
 	b.Run("keccak", benchKeccak(storageSlotAddr))
 	b.Run("pedersen hash", func(b *testing.B) {
 		var res []byte
-		// Warmup go-ipa generating precomputes before main bench.
-		res = verkleutils.GetTreeKeyStorageSlot(addrBytes, storageSlot)
-
 		b.ReportAllocs()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {
