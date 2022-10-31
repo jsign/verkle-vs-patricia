@@ -67,7 +67,6 @@ func BenchmarkFpMul(b *testing.B) {
 		x.SetRandom()
 		var y fp.Element
 		y.SetRandom()
-
 		b.ReportAllocs()
 		b.ResetTimer()
 		for i := 0; i < b.N; i++ {

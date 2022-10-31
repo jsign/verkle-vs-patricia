@@ -1,4 +1,4 @@
-module github.com/jsign/vkt-vs-mpt
+module github.com/jsign/verkle-vs-patricia
 
 go 1.19
 
