@@ -1,4 +1,4 @@
-module github.com/jsign/keccak-vs-pedersen
+module github.com/jsign/vkt-vs-mpt
 
 go 1.19
 
