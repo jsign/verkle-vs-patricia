@@ -4,16 +4,17 @@ This repository contains multiple benchmarks that are relevant to compare a Merk
 
 ## Run
 
-To run the benchmarks you need the Go and C compiler installed, and run:
+To run the benchmarks you need the Go, C, and Rust compilers installed, and run:
 
-- `make bench-go` for the Go benchmarks.
-- `make bench-blst` for the C blst benchmarks. It will automatically download & compile blst if needed.
+- `make bench-go`: to run the Go benchmarks.
+- `make bench-blst`: to run the C benchmarks.
+- `make bench-arkworks`: to run the Rust benchmarks.
 
 ## Benchmark results
 
 ### AMD Ryzen 7 3800XT 8-Core Processor
 
-Go benchmarks:
+Go benchmarks (with _Intel ADX_ CPU instructions):
 ```
 goos: linux
 goarch: amd64
@@ -49,14 +50,29 @@ BenchmarkHashStorageSlot/keccak-16                               2706037        
 BenchmarkHashStorageSlot/pedersen_hash-16                         133964              8609 ns/op             416 B/op         11 allocs/op
 ```
 
+Go (without _Intel ADX_ CPU instructions):
+```
+BenchmarkFpInverse/go-ipa-16              705946              1629 ns/op               0 B/op          0 allocs/op
+BenchmarkFpInverse/go-blst-16             714726              1427 ns/op              32 B/op          1 allocs/op
+BenchmarkFpMul/go-ipa-16                41319416                24.52 ns/op            0 B/op          0 allocs/op
+BenchmarkFpMul/go-blst-16               10759808               110.6 ns/op             0 B/op          0 allocs/op
+```
+
 C BLST benchmark:
 ```
 Inv(x) takes 1314 ns/op
 Mul(a,b) takes 73 ns/op
 ```
 
+Rust `arkworks-rs` benchmarks:
+```
+inverse                 time:   [2.1817 µs 2.1942 µs 2.2123 µs]                     
+mul                     time:   [16.340 ns 16.414 ns 16.504 ns]                 
+```
+
 ### Intel(R) Core(TM) i5-8279U CPU @ 2.40GHz
-Go benchmarks:
+
+Go benchmarks (with _Intel ADX_ CPU instructions):
 
 ```
 goos: darwin
@@ -93,8 +109,17 @@ BenchmarkHashStorageSlot/keccak-8                                2643908        
 BenchmarkHashStorageSlot/pedersen_hash-8                          130675              9139 ns/op             416 B/op         11 allocs/op
 ```
 
+Go (without _Intel ADX_ CPU instructions):
+```
+```
+
 C BLST benchmark:
 ```
 Inv(x) takes 1418 ns/op
 Mul(a,b) takes 142 ns/op
+```
+
+
+Rust `arkworks-rs` benchmarks:
+```
 ```

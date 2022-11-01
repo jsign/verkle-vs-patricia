@@ -16,11 +16,12 @@ func BenchmarkHashAddress(b *testing.B) {
 	_, err := rand.Read(addrBytes[:])
 	require.NoError(b, err)
 
+	// Warmup go-ipa generating precomputes before main bench.
+	sink = verkleutils.GetTreeKeyBalance(addrBytes)
+
 	b.Run("keccak", benchKeccak(addrBytes))
 	b.Run("pedersen hash", func(b *testing.B) {
 		var res []byte
-		// Warmup go-ipa generating precomputes before main bench.
-		res = verkleutils.GetTreeKeyBalance(addrBytes)
 
 		b.ReportAllocs()
 		b.ResetTimer()
