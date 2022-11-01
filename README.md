@@ -111,6 +111,10 @@ BenchmarkHashStorageSlot/pedersen_hash-8                          130675        
 
 Go (without _Intel ADX_ CPU instructions):
 ```
+BenchmarkFpInverse/go-ipa-8               563982              2384 ns/op               0 B/op          0 allocs/op
+BenchmarkFpInverse/go-blst-8              655209              2146 ns/op              32 B/op          1 allocs/op
+BenchmarkFpMul/go-ipa-8                 39916938                34.68 ns/op            0 B/op          0 allocs/op
+BenchmarkFpMul/go-blst-8                 8970868               133.3 ns/op             0 B/op          0 allocs/op
 ```
 
 C BLST benchmark:
@@ -119,7 +123,8 @@ Inv(x) takes 1418 ns/op
 Mul(a,b) takes 142 ns/op
 ```
 
-
 Rust `arkworks-rs` benchmarks:
 ```
+inverse                 time:   [2.0268 µs 2.0381 µs 2.0498 µs]
+mul                     time:   [23.864 ns 24.053 ns 24.313 ns]
 ```
