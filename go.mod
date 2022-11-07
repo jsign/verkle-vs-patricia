@@ -23,3 +23,7 @@ require (
 
 // References https://github.com/gballet/go-ethereum/tree/beverly-hills-head, to have GetTreeKey func.
 replace github.com/ethereum/go-ethereum => github.com/gballet/go-ethereum v1.10.24-0.20221005144906-f0e4ab07b54a
+
+// References https://github.com/jsign/go-ipa/tree/jsign/upinv.
+// Remove this `replace` if the underlying PR get's merged.
+replace github.com/crate-crypto/go-ipa => github.com/jsign/go-ipa v0.0.0-20221107222631-177a1ba0cb40
