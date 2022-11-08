@@ -3,7 +3,7 @@ module github.com/jsign/verkle-vs-patricia
 go 1.19
 
 require (
-	github.com/crate-crypto/go-ipa v0.0.0-20220916134416-c5abbdbdf644
+	github.com/crate-crypto/go-ipa v0.0.0-20221107233728-e868de2bc50d
 	github.com/ethereum/go-ethereum v1.10.25
 	github.com/gballet/go-verkle v0.0.0-20220923150140-6c08cd337774
 	github.com/holiman/uint256 v1.2.0
@@ -23,7 +23,3 @@ require (
 
 // References https://github.com/gballet/go-ethereum/tree/beverly-hills-head, to have GetTreeKey func.
 replace github.com/ethereum/go-ethereum => github.com/gballet/go-ethereum v1.10.24-0.20221005144906-f0e4ab07b54a
-
-// References https://github.com/jsign/go-ipa/tree/jsign/upinv.
-// Remove this `replace` if the underlying PR get's merged.
-replace github.com/crate-crypto/go-ipa => github.com/jsign/go-ipa v0.0.0-20221107222631-177a1ba0cb40
