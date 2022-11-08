@@ -3,7 +3,7 @@ module github.com/jsign/verkle-vs-patricia
 go 1.19
 
 require (
-	github.com/crate-crypto/go-ipa v0.0.0-20220916134416-c5abbdbdf644
+	github.com/crate-crypto/go-ipa v0.0.0-20221107233728-e868de2bc50d
 	github.com/ethereum/go-ethereum v1.10.25
 	github.com/gballet/go-verkle v0.0.0-20220923150140-6c08cd337774
 	github.com/holiman/uint256 v1.2.0
