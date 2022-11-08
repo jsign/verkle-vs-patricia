@@ -120,3 +120,53 @@ Rust `arkworks-rs` benchmarks:
 inverse                 time:   [2.0268 µs 2.0381 µs 2.0498 µs]
 mul                     time:   [23.864 ns 24.053 ns 24.313 ns]
 ```
+
+### Nvidia Jetson Orin 12-Core Tegra @ 2.2GHz
+
+Go benchmarks:
+```
+goarch: arm64
+pkg: github.com/jsign/verkle-vs-patricia
+BenchmarkFpInverse/go-ipa-12            	  442096	      2819 ns/op	       0 B/op	       0 allocs/op
+BenchmarkFpInverse/go-blst-12           	  475665	      2471 ns/op	      32 B/op	       1 allocs/op
+BenchmarkFpMul/go-ipa-12                	30143986	        38.90 ns/op	       0 B/op	       0 allocs/op
+BenchmarkFpMul/go-blst-12               	 4883612	       216.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkKeccak/size=32-12              	 2010416	       600.2 ns/op	       0 B/op	       0 allocs/op
+BenchmarkKeccak/size=64-12              	 1966846	       582.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkKeccak/size=128-12             	 2104431	       538.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkKeccak/size=256-12             	 1000000	      1006 ns/op	       0 B/op	       0 allocs/op
+BenchmarkKeccak/size=512-12             	  622038	      1924 ns/op	       0 B/op	       0 allocs/op
+BenchmarkKeccak/size=1024-12            	  314476	      3772 ns/op	       0 B/op	       0 allocs/op
+BenchmarkPedersenCommit/non_zero_entries=1-12         	   13968	     81729 ns/op	     81729 ns/value	   33937 B/op	      20 allocs/op
+BenchmarkPedersenCommit/non_zero_entries=2-12         	   10000	    102697 ns/op	     51349 ns/value	   33937 B/op	      20 allocs/op
+BenchmarkPedersenCommit/non_zero_entries=4-12         	    8658	    140834 ns/op	     35209 ns/value	   33937 B/op	      20 allocs/op
+BenchmarkPedersenCommit/non_zero_entries=8-12         	    5784	    210640 ns/op	     26330 ns/value	   33937 B/op	      20 allocs/op
+BenchmarkPedersenCommit/non_zero_entries=16-12        	    3428	    379230 ns/op	     23702 ns/value	   33937 B/op	      20 allocs/op
+BenchmarkPedersenCommit/non_zero_entries=32-12        	    1759	    653771 ns/op	     20431 ns/value	   33937 B/op	      20 allocs/op
+BenchmarkPedersenCommit/non_zero_entries=64-12        	     936	   1239902 ns/op	     19374 ns/value	   33931 B/op	      19 allocs/op
+BenchmarkPedersenCommit/non_zero_entries=128-12       	     511	   2340999 ns/op	     18289 ns/value	   33943 B/op	      20 allocs/op
+BenchmarkPedersenCommit/non_zero_entries=256-12       	     252	   4689499 ns/op	     18318 ns/value	   33958 B/op	      21 allocs/op
+BenchmarkPedersenUpdateCommitment/vec_num_entries=1-12         	   50266	     23384 ns/op	     376 B/op	       8 allocs/op
+BenchmarkPedersenUpdateCommitment/vec_num_entries=4-12         	   51420	     23655 ns/op	     376 B/op	       8 allocs/op
+BenchmarkPedersenUpdateCommitment/vec_num_entries=16-12        	   51490	     24926 ns/op	     376 B/op	       8 allocs/op
+BenchmarkPedersenUpdateCommitment/vec_num_entries=64-12        	   50168	     23342 ns/op	     376 B/op	       8 allocs/op
+BenchmarkPedersenUpdateCommitment/vec_num_entries=256-12       	   51333	     23607 ns/op	     368 B/op	       7 allocs/op
+BenchmarkHashAddress/keccak-12                                 	 1864634	       603.7 ns/op	       0 B/op	       0 allocs/op
+BenchmarkHashAddress/pedersen_hash-12                          	   87103	     13799 ns/op	     160 B/op	       3 allocs/op
+BenchmarkHashStorageSlot/keccak-12                             	 1897682	       597.1 ns/op	       0 B/op	       0 allocs/op
+BenchmarkHashStorageSlot/pedersen_hash-12                      	   68104	     17827 ns/op	     416 B/op	      11 allocs/op
+PASS
+ok  	github.com/jsign/verkle-vs-patricia	53.355s
+```
+
+C BLST benchmark:
+```
+Inv(x) takes 2360 ns/op
+Mul(a,b) takes 126 ns/op
+```
+
+Rust `arkworks-rs` benchmarks:
+```
+inverse                 time:   [2.9362 µs 2.9450 µs 2.9545 µs]
+mul                     time:   [35.116 ns 35.119 ns 35.123 ns]
+```
