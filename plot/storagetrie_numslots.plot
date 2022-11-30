@@ -1,4 +1,4 @@
-set title "Storage Tries - Num non-zero slots"
+set title "Storage Tries - Num used slots"
 set key off
 set datafile separator ","; 
 set xrange [0:25]; 

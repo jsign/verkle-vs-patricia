@@ -57,8 +57,7 @@ func analyzeTries(ctx context.Context, trieRoot common.Hash, t *trie.StateTrie, 
 
 	// Histograms for Storage Tries.
 	histStorageTrieDepths := histogram.New[int]("Storage Trie - Depths")
-	histStorageTriePathTypes := histogram.New[string]("Storage Trie - Path types")
-	histStorageTriesNumSlots := histogram.New[int64]("Storage Trie - Number of non-zero slots")
+	histStorageTriesNumSlots := histogram.New[int64]("Storage Trie - Number of used slots")
 
 	iter := t.NodeIterator(nil)
 	for iter.Next(true) {
@@ -67,7 +66,7 @@ func analyzeTries(ctx context.Context, trieRoot common.Hash, t *trie.StateTrie, 
 
 			// State Trie analysis.
 			pathNodeTypes := iter.Stack()
-			histStateTrieDepths.Observe(len(pathNodeTypes))
+			histStateTrieDepths.Observe(len(pathNodeTypes) - 1)
 			histStatePathTypes.Observe(toShortPathTypes(pathNodeTypes))
 
 			// Storage tries analysis.
@@ -83,7 +82,7 @@ func analyzeTries(ctx context.Context, trieRoot common.Hash, t *trie.StateTrie, 
 					log.Fatalf("failed to open storage trie: %s", err)
 				}
 
-				var storageTriesNumSlots int64
+				var storageTriesNumSlots, storageSlotCumDepth int64
 				storageIter := storageTrie.NodeIterator(nil)
 				for storageIter.Next(true) {
 					if storageIter.Leaf() {
@@ -91,12 +90,11 @@ func analyzeTries(ctx context.Context, trieRoot common.Hash, t *trie.StateTrie, 
 							break
 						}
 						storageTriesNumSlots += 1
-
 						pathNodeTypes := storageIter.Stack()
-						histStorageTrieDepths.Observe(len(pathNodeTypes))
-						histStorageTriePathTypes.Observe(toShortPathTypes(pathNodeTypes))
+						storageSlotCumDepth += int64(len(pathNodeTypes) - 1)
 					}
 				}
+				histStorageTrieDepths.Observe(int(storageSlotCumDepth / storageTriesNumSlots))
 				histStorageTriesNumSlots.Observe(storageTriesNumSlots)
 
 				if storageIter.Error() != nil {
@@ -105,7 +103,7 @@ func analyzeTries(ctx context.Context, trieRoot common.Hash, t *trie.StateTrie, 
 			}
 		}
 
-		if time.Since(lastReport) > time.Second*5 {
+		if time.Since(lastReport) > time.Minute*15 {
 			// State Trie stdout reports.
 			fmt.Printf("Walked %d (EOA + SC) accounts:\n", leafNodes)
 			histStateTrieDepths.Print(os.Stdout)
@@ -115,22 +113,24 @@ func analyzeTries(ctx context.Context, trieRoot common.Hash, t *trie.StateTrie, 
 			// Storage tries stdout reports.
 			fmt.Printf("Walked %d Storage Tries:\n", storageTries)
 			histStorageTrieDepths.Print(os.Stdout)
-			histStorageTriePathTypes.Print(os.Stdout)
+			histStorageTriesNumSlots.Print(os.Stdout)
+
 			fmt.Printf("-----\n\n")
 
 			lastReport = time.Now()
-		}
 
-		if ctx.Err() != nil {
+			// Persist .csv.
 			// State Trie.
 			histStateTrieDepths.ToCSV("statetrie_depth.csv")
 			histStatePathTypes.ToCSV("statetrie_pathtypes.csv")
 
 			// Storage Tries.
 			histStorageTrieDepths.ToCSV("storagetrie_depth.csv")
-			histStorageTriePathTypes.ToCSV("storagetrie_pathtypes.csv")
 			histStorageTriesNumSlots.ToCSV("storagetrie_numslots.csv")
 
+		}
+
+		if ctx.Err() != nil {
 			return
 		}
 	}
@@ -141,11 +141,13 @@ func analyzeTries(ctx context.Context, trieRoot common.Hash, t *trie.StateTrie, 
 
 func toShortPathTypes(nodeTypes []string) string {
 	var sb strings.Builder
-	for _, nodeType := range nodeTypes {
+	for i, nodeType := range nodeTypes[:len(nodeTypes)-1] {
 		switch nodeType {
-		case "trie.valueNode":
-			sb.WriteString("L.")
 		case "*trie.shortNode":
+			if i == len(nodeTypes)-2 {
+				sb.WriteString("L.")
+				continue
+			}
 			sb.WriteString("E.")
 		case "*trie.fullNode":
 			sb.WriteString("B.")

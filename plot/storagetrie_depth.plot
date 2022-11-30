@@ -1,9 +1,9 @@
 set title "Storage Tries - Depth"
 set key off
 set datafile separator ","; 
-set xrange [1:11]; 
+set xrange [0:13]; 
 set xtics 1
-set yrange [0:30]; 
+set yrange [0:65]; 
 set xlabel "depth" offset 1
 set ylabel "% of slots at depth" offset 1
 set style fill solid; 

@@ -36,7 +36,12 @@ func (h *Histogram[T]) Observe(bucket T) {
 
 func (h *Histogram[T]) Print(w io.Writer) {
 	fmt.Printf("%s:\n", h.title)
-	for _, k := range h.sortedKeys() {
+	sortedKeys := h.sortedKeys()
+	len := len(sortedKeys)
+	if len > 100 {
+		len = 100
+	}
+	for _, k := range sortedKeys[:len] {
 		fmt.Fprintf(w, "%v: %.02f%% (%d)\n", k, float64(h.buckets[k])/float64(h.total)*100, h.buckets[k])
 	}
 	fmt.Println()

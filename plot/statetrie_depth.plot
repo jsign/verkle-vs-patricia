@@ -1,7 +1,7 @@
 set title "State Trie - Depth"
 set key off
 set datafile separator ","; 
-set xrange [8.5:12]; 
+set xrange [8.5:13]; 
 set xtics nomirror 1
 set yrange [0:55]; 
 set xlabel "depth" offset 1
