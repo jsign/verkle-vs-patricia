@@ -13,3 +13,9 @@ bench-blst:
 bench-arkworks:
 	cd bench-arkworks && cargo install -q cargo-criterion && cargo criterion
 .PHONY: bench-arkworks
+
+analytics-plots:
+	gnuplot plot/statetrie_depth.plot -p
+	gnuplot plot/statetrie_pathtypes.plot -p
+	gnuplot plot/storagetrie_depth.plot -p
+	gnuplot plot/storagetrie_numslots.plot -p

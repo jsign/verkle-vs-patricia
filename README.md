@@ -2,15 +2,26 @@
 
 This repository contains multiple benchmarks that are relevant to compare a Merkle Patricia Trie with a Verkle Trie.
 
-## Run
+## Analytics
+
+In `cmd/analytics` there's a CLI tool that takes a `--chaindata` flag with the chaindata folder of a Geth node and performs a depth analysis of the MPT.
+
+Running `go run ./cmd/analytics --chaindata <path>` will:
+- Walk the MPT and start collecting depth and branch data.
+- Every couple of seconds, it prints to stdout preliminary results and data in .csv files.
+- You can interrupt the run with Ctrl+C to close gracefully.
+
+After closing an execution, you can run `make analytics-plots`, automatically generating GNU plots from the .csv outputs.
+
+[You can see a report generated with this tool on ~December 2022](https://hackmd.io/@jsign/geth-mpt-analysis).
+
+## Benchmarks
 
 To run the benchmarks you need the Go, C, and Rust compilers installed, and run:
 
 - `make bench-go`: to run the Go benchmarks.
 - `make bench-blst`: to run the C benchmarks.
 - `make bench-arkworks`: to run the Rust benchmarks.
-
-## Benchmark results
 
 ### AMD Ryzen 7 3800XT 8-Core Processor
 
