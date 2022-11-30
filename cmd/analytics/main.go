@@ -21,7 +21,7 @@ import (
 var emptyRoot = common.HexToHash("56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421")
 
 func main() {
-	snapshotPath := "/mnt/data/.ethereum/geth/chaindata"
+	snapshotPath := "/data/ethereum/geth/chaindata"
 	db, err := rawdb.NewLevelDBDatabase(snapshotPath, 1024, 2000, "", true)
 	if err != nil {
 		log.Fatalf("opening leveldb db: %s", err)
